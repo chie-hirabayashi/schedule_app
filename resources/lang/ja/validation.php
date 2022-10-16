@@ -127,5 +127,7 @@ return [
             'rule-name' => 'custom-message',
         ],
     ],
-    'attributes'           => [],
+    'attributes'           => [
+        'body' => '詳細'
+    ],
 ];

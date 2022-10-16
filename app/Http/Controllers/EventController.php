@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
+use BaconQrCode\Renderer\RendererStyle\Fill;
+use Carbon\Carbon;
 
 class EventController extends Controller
 {
@@ -15,7 +17,11 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        // $events = Event::latest()->get();
+        // $events = Event::orderBy('start', 'desc')->get();
+        $events = Event::orderBy('start', 'asc')->get();
+
+        return view('events.index')->with(compact('events'));
     }
 
     /**
@@ -25,7 +31,7 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+    return view('events.create');
     }
 
     /**
@@ -36,7 +42,16 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
-        //
+        $event = new Event($request->all());
+        $event->user_id = $request->user()->id;
+        // dd($event);
+        try {
+            $event->save();
+        } catch (\Throwable $th) {
+            return back()->withInput()->withErrors($th->getMessage());
+        }
+
+        return redirect()->route('events.show', $event)->with('notice', '新しいイベントが発生しました');
     }
 
     /**
@@ -47,7 +62,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        //
+        return view('events.show')->with(compact('event'));
     }
 
     /**
@@ -58,7 +73,16 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        // この処理をモデルでアクセサ
+        // $start_array = explode(' ', $event->start);
+        // $end_array = explode(' ', $event->end);
+        
+        // $event->start_date = $start_array[0];
+        // $event->start_time = $start_array[1];
+        // $event->end_date = $start_array[0];
+        // $event->end_time = $start_array[1];
+
+        return view('events.edit')->with(compact('event'));
     }
 
     /**
@@ -70,7 +94,15 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
-        //
+        $event->fill($request->all());
+        // dd($event);
+        try {
+            $event->save();
+        } catch (\Throwable $th) {
+            return back()->withInput()->withErrors($th->getMessage());
+        }
+
+        return redirect()->route('events.show', $event)->with('notice', '編集しました');
     }
 
     /**
@@ -81,6 +113,14 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        try {
+            $event->delete();
+        } catch (\Throwable $th) {
+            return back()->withInput()->withErrors($th->getMessage());
+        }
+
+        return redirect()
+                ->route('events.index')
+                ->with('notice', 'イベントを削除しました');
     }
 }
