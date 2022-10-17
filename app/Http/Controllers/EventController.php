@@ -11,6 +11,10 @@ use Carbon\Carbon;
 
 class EventController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Event::class, 'event');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,6 +22,7 @@ class EventController extends Controller
      */
     public function index()
     {
+        // $events = Event::all();
         // $events = Event::latest()->get();
         // $events = Event::orderBy('start', 'desc')->get();
         // $events = Event::orderBy('start', 'asc')->get();
