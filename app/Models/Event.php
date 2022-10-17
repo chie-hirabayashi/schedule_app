@@ -11,11 +11,22 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'title',
         'body',
         'start',
         'end',
     ];
+
+/**
+ * Get the user that owns the Event
+ *
+ * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+ */
+public function user()
+{
+    return $this->belongsTo(User::class, 'user_id', 'id');
+}
 
     // XX時間前の表示用
     public function start_diff()

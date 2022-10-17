@@ -23,14 +23,16 @@ class StoreEventRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+        $rule = [
             'title' => 'required|string|max:50',
             'body' => 'required|string|max:500',
             'start_date' => 'required|string',
             'start_time' => 'required|string',
-            'end_date' => 'required|string',
+            'end_date' => 'required|string|after_or_equal:start_date',
             'end_time' => 'required|string',
         ];
+
+        return $rule;
     }
 
     protected function prepareForValidation()
