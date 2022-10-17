@@ -128,6 +128,11 @@ return [
         ],
     ],
     'attributes'           => [
-        'body' => '詳細'
+        'title' => 'タイトル',
+        'body' => '詳細',
+        'start' => '開始時間',
+        'end' => '終了時間',
+        'start_date','start_time' => '開始日時',
+        'end_date','end_time' => '終了日時'
     ],
 ];
