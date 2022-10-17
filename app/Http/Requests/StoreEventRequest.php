@@ -32,6 +32,10 @@ class StoreEventRequest extends FormRequest
             'end_time' => 'required|string',
         ];
 
+        if ($this->filled(['start_date']) == $this->filled(['end_date'])) {
+            $rule['end_time'] = 'required|string|after_or_equal:start_time';
+        }
+
         return $rule;
     }
 
