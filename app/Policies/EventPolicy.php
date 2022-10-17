@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class EventPolicy
 {
@@ -16,9 +17,12 @@ class EventPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(?User $user)
+    // ? オプショナルユーザーがあるときはユーザーを取得、無いときはスルー
     {
-        //
+        // viewAnyはindexのポリシー
+        // サインイン認証とおっていればOK
+        return true;
     }
 
     /**
@@ -30,7 +34,8 @@ class EventPolicy
      */
     public function view(User $user, Event $event)
     {
-        //
+        // viewはshowのポリシー
+        return true;
     }
 
     /**
@@ -41,7 +46,7 @@ class EventPolicy
      */
     public function create(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -53,7 +58,9 @@ class EventPolicy
      */
     public function update(User $user, Event $event)
     {
-        //
+        // allow:許可、deny:拒絶
+        return $user->id === $event->user_id ?
+            Response::allow() : Response::deny('許可されていない操作です');
     }
 
     /**
@@ -65,7 +72,8 @@ class EventPolicy
      */
     public function delete(User $user, Event $event)
     {
-        //
+        return $user->id === $event->user_id ?
+            Response::allow() : Response::deny('許可されていない操作です');
     }
 
     /**
@@ -77,7 +85,7 @@ class EventPolicy
      */
     public function restore(User $user, Event $event)
     {
-        //
+        // softdeleteを戻すときのポリシー
     }
 
     /**
@@ -89,6 +97,6 @@ class EventPolicy
      */
     public function forceDelete(User $user, Event $event)
     {
-        //
+        // softdeleteを本当のdeleteするときのポリシー
     }
 }
