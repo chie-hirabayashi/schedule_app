@@ -4,6 +4,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import momentPlugin from "@fullcalendar/moment";
+import axios from "axios";
 
 // htmlにidで埋め込み
 const calendarEl = document.getElementById("calendar");
@@ -41,11 +42,8 @@ const calendar = new Calendar(calendarEl, {
     },
     // 予定をドラッグ&ドロップ
     eventDrop: function (event, delta) {
-        alert('eventDropのイベントです');
-        // console.log(event);
-        console.log(event.event.id);
-        console.log(event.event.start);
-        console.log(event.event.end);
+        // alert('eventDropのイベントです');
+        resizeAction(event.event);
     },
     // 予定時刻のサイズ変更
     editable: true,  // trueにしないと変更できない
@@ -71,6 +69,20 @@ const formEndDate = modalForm.querySelector('input[name="end_date"]');
 const formEndTime = modalForm.querySelector('input[name="end_time"]');
 const formTitle = modalForm.querySelector('input[name="title"]');
 const formBody = modalForm.querySelector('textarea[name="body"]');
+
+function resizeAction(event) {
+    const data = {
+        id: event.id,
+        title: event.title,
+        body: event.extendedProps.body,
+        start: event.start,
+        end: event.end,
+        type: 'update',
+    };
+    // console.log(data);
+
+    axios.post('/calendar/action', data);
+}
 
 function toggleModal() {
     modal.classList.toggle("hidden");
