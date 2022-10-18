@@ -53,3 +53,13 @@ const calendar = new Calendar(calendarEl, {
 });
 
 calendar.render();
+
+// キャンセルボタンの処理
+const closeModalButton = document.getElementById('cancel-button');
+closeModalButton.addEventListener('click', function() {
+    document.getElementById('add-button').classList.add('hidden');
+    document.getElementById('modal-id').classList.toggle('hidden');
+    document.getElementById('modal-id').classList.toggle('flex');
+    document.getElementById('modal-id-bg').classList.toggle('hidden');
+    document.getElementById('modal-id-bg').classList.toggle('flex');
+});
