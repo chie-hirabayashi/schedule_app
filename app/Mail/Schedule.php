@@ -30,7 +30,7 @@ class Schedule extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.test')
+        return $this->view('mail.schedule')
             ->subject('Test Mail')
             ->with(['user' => $this->user]);
             // メールではcompactは使えない

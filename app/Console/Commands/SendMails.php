@@ -66,7 +66,12 @@ class SendMails extends Command
             // $to = Carbon::now()->addWeeK(1);
             // $query->whereDate('start', '>=', $from)
             //     ->whereDate('start', '<=', $to);
-        })->get();
+        })->with(['events' => function ($query) {
+            // 日付で絞り込み
+            $tomorrow = Carbon::now()->addDay(1);
+            $query->whereDate('start', $tomorrow);
+        }])->get();
+        
         foreach ($users as $user) {
             Mail::to($user->email)
                 ->send(new Schedule($user));
