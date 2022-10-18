@@ -43,7 +43,7 @@ class SendMails extends Command
         echo 'SendMail';
 
         $user = User::first();
-        
+
         // テキストメールで短文の場合
         Mail::raw('本文です', function ($message) use ($user) {
             $message->to($user->email)
@@ -51,6 +51,6 @@ class SendMails extends Command
         });
         // メール用クラスのMailableを利用する場合
         Mail::to($user->email)
-            ->send(new Schedule());
+            ->send(new Schedule($user));
     }
 }

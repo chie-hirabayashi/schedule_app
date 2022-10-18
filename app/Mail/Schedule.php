@@ -11,14 +11,16 @@ class Schedule extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $user;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -28,6 +30,9 @@ class Schedule extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.test');
+        return $this->view('mail.test')
+            ->subject('Test Mail')
+            ->with(['user' => $this->user]);
+            // メールではcompactは使えない
     }
 }
