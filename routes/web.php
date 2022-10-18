@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\FullCalendarController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,13 @@ Route::middleware([
 
     // CRUD用
     Route::resource('events', EventController::class);
+
+    // カレンダー用
+    Route::get('calender', function ()
+    {
+        return view('full-calendar');
+    })->name('calendar');
+
+    Route::get('calendar/action', [FullCalendarController::class, 'index']);
+    Route::post('calendar/action', [FullCalendarController::class, 'action']);
 });
