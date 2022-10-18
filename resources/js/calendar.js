@@ -31,7 +31,6 @@ const calendar = new Calendar(calendarEl, {
     selectable: true,  // trueにしないと選択できない
     select: function (start, end, allDay) {
         // alert('selectのイベントです');
-        document.getElementById('modal-id').classList.toggle('hidden');
         createModal();
     },
     // 予定がある部分をクリック
@@ -51,17 +50,18 @@ const calendar = new Calendar(calendarEl, {
 
 calendar.render();
 
+const addButton = document.getElementById('add-button');
+
 // キャンセルボタンの処理
 const closeModalButton = document.getElementById('cancel-button');
 closeModalButton.addEventListener('click', function() {
-    document.getElementById('add-button').classList.add('hidden');
+    addButton.classList.add('hidden');
     toggleModal();
 });
+
 function createModal() {
-    document.getElementById('modal-id').classList.toggle('flex');
-    document.getElementById('modal-id-bg').classList.toggle('hidden');
-    document.getElementById('modal-id-bg').classList.toggle('flex');
-    document.getElementById('add-button').classList.toggle('hidden');
+    document.getElementById('add-button').classList.remove('hidden');
+    toggleModal();
 }
 
 function toggleModal() {
@@ -70,4 +70,3 @@ function toggleModal() {
     document.getElementById('modal-id-bg').classList.toggle('hidden');
     document.getElementById('modal-id-bg').classList.toggle('flex');
 }
-
