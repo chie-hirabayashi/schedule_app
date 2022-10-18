@@ -42,15 +42,22 @@ class SendMails extends Command
     {
         echo 'SendMail';
 
-        $user = User::first();
+        // $user = User::first();
 
-        // テキストメールで短文の場合
-        Mail::raw('本文です', function ($message) use ($user) {
-            $message->to($user->email)
-                ->subject('タイトルです');
-        });
-        // メール用クラスのMailableを利用する場合
-        Mail::to($user->email)
-            ->send(new Schedule($user));
+        // // テキストメールで短文の場合
+        // Mail::raw('本文です', function ($message) use ($user) {
+        //     $message->to($user->email)
+        //         ->subject('タイトルです');
+        // });
+        // // メール用クラスのMailableを利用する場合
+        // Mail::to($user->email)
+        //     ->send(new Schedule($user));
+
+        // 登録ユーザーにメール送信
+        $users = User::all();
+        foreach ($users as $user) {
+            Mail::to($user->email)
+                ->send(new Schedule($user));
+        }
     }
 }
