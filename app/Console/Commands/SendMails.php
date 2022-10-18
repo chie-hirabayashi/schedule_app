@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\Schedule;
 use App\Models\User;
+use Carbon\Carbon;
 
 class SendMails extends Command
 {
@@ -54,7 +55,18 @@ class SendMails extends Command
         //     ->send(new Schedule($user));
 
         // 登録ユーザーにメール送信
-        $users = User::all();
+        // $users = User::all();
+        $users = User::whereHas('events', function ($query) {
+            // 日付で絞り込み
+            $tomorrow = Carbon::now()->addDay(1);
+            $query->whereDate('start', $tomorrow);
+
+            // 範囲指定の方法(翌日から1週間)
+            // $from = Carbon::now()->addDay(1);
+            // $to = Carbon::now()->addWeeK(1);
+            // $query->whereDate('start', '>=', $from)
+            //     ->whereDate('start', '<=', $to);
+        })->get();
         foreach ($users as $user) {
             Mail::to($user->email)
                 ->send(new Schedule($user));
