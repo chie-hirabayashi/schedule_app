@@ -32,10 +32,7 @@ const calendar = new Calendar(calendarEl, {
     select: function (start, end, allDay) {
         // alert('selectのイベントです');
         document.getElementById('modal-id').classList.toggle('hidden');
-        document.getElementById('modal-id').classList.toggle('flex');
-        document.getElementById('modal-id-bg').classList.toggle('hidden');
-        document.getElementById('modal-id-bg').classList.toggle('flex');
-        document.getElementById('add-button').classList.toggle('hidden');
+        createModal();
     },
     // 予定がある部分をクリック
     eventClick: function (event) {
@@ -58,8 +55,19 @@ calendar.render();
 const closeModalButton = document.getElementById('cancel-button');
 closeModalButton.addEventListener('click', function() {
     document.getElementById('add-button').classList.add('hidden');
+    toggleModal();
+});
+function createModal() {
+    document.getElementById('modal-id').classList.toggle('flex');
+    document.getElementById('modal-id-bg').classList.toggle('hidden');
+    document.getElementById('modal-id-bg').classList.toggle('flex');
+    document.getElementById('add-button').classList.toggle('hidden');
+}
+
+function toggleModal() {
     document.getElementById('modal-id').classList.toggle('hidden');
     document.getElementById('modal-id').classList.toggle('flex');
     document.getElementById('modal-id-bg').classList.toggle('hidden');
     document.getElementById('modal-id-bg').classList.toggle('flex');
-});
+}
+
